@@ -33,6 +33,7 @@ class CustomCallback(BaseCallbackHandler):
 
 class DungeonMaster:
     def __init__(self):
+        self.state = "start"  # Add this line
         self.llm = ChatOpenAI(
             model="meta-llama-3.1-8b-instruct",
             temperature=0.7,
@@ -40,6 +41,7 @@ class DungeonMaster:
             openai_api_base="https://chat-ai.academiccloud.de/v1",
         )
         self.chain = self.create_dungeon_chain()
+    # ...existing code...
 
     def create_dungeon_chain(self):
         prompt = PromptTemplate.from_template("""

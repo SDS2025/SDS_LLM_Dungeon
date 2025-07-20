@@ -135,6 +135,7 @@ if user_input and user_input != st.session_state.last_input:
                 "session_id": st.session_state.session_id,
             },
         )
+        response.raise_for_status()  # Raises HTTPError for bad responses
         response_data = response.json()
 
         # Bot-Antwort zum Chat-Verlauf hinzufügen
