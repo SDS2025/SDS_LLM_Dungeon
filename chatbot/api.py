@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
-from animalbot import AnimalAgent
+from dungeonbot import DungeonMaster
 
 app = FastAPI()
 
@@ -16,7 +16,7 @@ app.add_middleware(
 )
 
 # Dictionary für Session-spezifische Agenten
-session_agents: Dict[str, AnimalAgent] = {}
+session_agents: Dict[str, DungeonMaster] = {}
 
 class ChatMessage(BaseModel):
     message: str
@@ -33,7 +33,7 @@ async def chat(chat_message: ChatMessage):
     try:
         # Prüfen ob eine Session-ID existiert, sonst neue erstellen
         if chat_message.session_id not in session_agents:
-            session_agents[chat_message.session_id] = AnimalAgent()
+            session_agents[chat_message.session_id] = DungeonMaster()
         
         agent = session_agents[chat_message.session_id]
         response, log_message = agent.get_response(

@@ -1,6 +1,6 @@
 services:
   # animalbot service - combines API and web interface
-  animalbot:
+  dungeonbot:
     build:
       context: .
       dockerfile: chatbot/Dockerfile     

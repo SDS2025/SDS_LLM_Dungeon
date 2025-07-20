@@ -4,6 +4,7 @@ import json
 import uuid
 import os
 
+
 # Konfiguration der Seite
 st.set_page_config(page_title="Animal Chatbot", page_icon="🐾", layout="centered")
 

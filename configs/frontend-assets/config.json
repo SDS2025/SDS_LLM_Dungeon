@@ -1,6 +1,6 @@
 {
-    "escape_room_name": "Animalbot",
-    "chatbot_name": "Animalbot",
+    "escape_room_name": "Dungeonbot",
+    "chatbot_name": "Dungeonbot",
     "messagebox_caption": "Say something",
     "send_button_caption": "Say",
     "user_name": "You",
@@ -12,5 +12,5 @@
     "llm_parameters": {
         "max_new_tokens": 100
     },
-    "explanation_text": "You are chatting with the animalbot."
+    "explanation_text": "You are chatting with the dungeonbot."
 }
