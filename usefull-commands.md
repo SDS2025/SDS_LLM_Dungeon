@@ -3,9 +3,9 @@
 ## Chatting with Chatbot in terminal 
 
 ```bash 
-docker build -t animalbot ./chatbot
+docker build -t dungeonbot ./chatbot
 ```
 
 ```bash 
-docker run -it --env-file ./.env animalbot
+docker run -it --env-file ./.env dungeonbot
 ```
