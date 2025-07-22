@@ -80,11 +80,11 @@ if "session_id" not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
 
 # Titel und Beschreibung
-st.title("🐾 Dungeon Chatbot")
+st.title("🐉Dungeon Chatbot🧝🏻‍♀️")
 st.markdown(
     """
-Chatte mit einem Fuchs oder einer Ente! 
-Sage einfach "Du bist ein Fuchs" oder "Du bist eine Ente" um den Charakter zu wechseln.
+Bist du bereit dein persönliches DnD Abenteuer zu erleben! 
+Begrüße den Bot und starte ins Abenteuer ⚔️🐍.
 """
 )
 
