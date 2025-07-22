@@ -4,8 +4,9 @@ import json
 import uuid
 import os
 
+
 # Konfiguration der Seite
-st.set_page_config(page_title="Animal Chatbot", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="Dungeon Chatbot", page_icon="🐾", layout="centered")
 
 # Get API base URL from environment variable or use default
 API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost")
@@ -33,6 +34,17 @@ st.markdown(
     
     .stTextInput>div>div>input {
         background-color: #f0f2f6;
+        position: relative;
+    }
+    .stTextInput > div > div::after {
+        content: '⏳';   
+        position: absolute;
+        left: -15px;
+        top: 60%;
+        transform: translateY(-30%);
+        font-size: 20px;
+         opacity: 1;      
+        pointer-events: none;
     }
     .chat-message {
         padding: 1.5rem;
@@ -79,17 +91,14 @@ if "session_id" not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
 
 # Titel und Beschreibung
-st.title("🐾 Animal Chatbot")
+st.title("🐉Dungeon Chatbot🧝🏻‍♀️")
 st.markdown(
     """
-Chatte mit einem Fuchs oder einer Ente! 
-Sage einfach "Du bist ein Fuchs" oder "Du bist eine Ente" um den Charakter zu wechseln.
+Bist du bereit dein persönliches DnD Abenteuer zu erleben! \n
+Begrüße den Bot und starte ins Abenteuer ⚔️🐍.
 """
 )
 
-# Status-Anzeige
-state_emoji = "🦊" if st.session_state.current_state == "fox" else "🦆"
-st.markdown(f"**Aktueller Charakter:** {state_emoji}")
 
 # Chat-Verlauf anzeigen
 for message in st.session_state.messages:
@@ -108,7 +117,6 @@ for message in st.session_state.messages:
             st.markdown(
                 f"""
             <div class="chat-message bot">
-                <div>{state_emoji} <b>Bot:</b></div>
                 <div>{message["content"]}</div>
             </div>
             """,
@@ -138,6 +146,7 @@ if user_input and user_input != st.session_state.last_input:
                 "session_id": st.session_state.session_id,
             },
         )
+        response.raise_for_status()  # Raises HTTPError for bad responses
         response_data = response.json()
 
         # Bot-Antwort zum Chat-Verlauf hinzufügen
