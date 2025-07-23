@@ -37,7 +37,7 @@ class DungeonMaster:
         self.visited = set()
         self.chat_history = []
         self.death_message = "You have met an untimely demise. Game over."
-        
+
         self.llm = ChatOpenAI(
             model="meta-llama-3.1-8b-instruct",
             temperature=0.5,
@@ -156,6 +156,7 @@ DM:""")
         msg = user_message.lower()
 
         if self.state == "initial":
+            self.display_image("initial_room.png")
             if "key" in msg:
                 self.inventory.add("key")
             if "book" in msg:
@@ -186,6 +187,7 @@ DM:""")
                     self.visited.add("Room 3")
 
         elif self.state == "Room 1":
+            self.display_image("room2_bib.png")
             if any(word in msg for word in ["shout", "yell", "loud", "scream", "noise"]):
                 self.state = "Death"
                 self.death_message = "Your voice echoes through the library. The skeleton reacts instantly, silencing you forever."
@@ -213,6 +215,7 @@ DM:""")
                     self.display_image("Death by Snake")
 
         elif self.state == "Room 3":
+            self.display_image("room3.png")
             if "pictures" in msg or "wall" in msg:
                 self.inventory.add("saw pictures")
             if "book" in msg and ("order" in msg or "hint" in msg):
