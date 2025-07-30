@@ -37,6 +37,7 @@ class DungeonMaster:
         self.visited = set()
         self.chat_history = []
         self.death_message = "You have met an untimely demise. Game over."
+        self.last_image_path = None
 
         self.llm = ChatOpenAI(
             model="meta-llama-3.1-8b-instruct",
@@ -140,17 +141,31 @@ DM:""")
             "callback_logs": callback.messages
         }
         return response, log
+   
+    # Bild anzeigen
     def display_image(self, image_name):
-        from PIL import Image
         import os
         base_dir = os.path.dirname(os.path.abspath(__file__))
         image_path = os.path.join(base_dir, "images", image_name)
-        try:
-            img = Image.open(image_path)
-            img.show()
-        except Exception as e:
-            print(f"[Bild konnte nicht angezeigt werden: {image_path}]")
-            print(f"Fehler: {e}")
+        self.last_image_path = image_path  # in Streamlit nutzbar
+        return image_path
+            
+
+#Bilder für Sidebar
+    def get_current_room_image(self):
+        image_map = {
+            "initial": "initial_room.png",
+            "Room 1": "room2_bib.png",
+            "Room 2": "room2_snake.png",
+            "Room 3": "room3.png",
+            "Corridor": "corridor.png",
+            "Underground River": "river.png",
+            "Escape": "exit.png",
+            "Escape_Alt": "boat.png",
+            "Death": "fire.png",
+        }
+        image_name = image_map.get(self.state, "default.png")
+        return os.path.join("images", image_name)
 
     def update_state(self, user_message):
         msg = user_message.lower()
@@ -165,7 +180,7 @@ DM:""")
                 if "gold" in msg:
                     self.state = "Death"
                     self.death_message = "As you insert the key into the golden dragon’s mouth, flames erupt and consume you."
-                    self.display_image("fire.png")
+                    #self.display_image("fire.png")
                     return
                 elif "silver" in msg:
                     if "key" in self.inventory:
@@ -173,7 +188,7 @@ DM:""")
                         self.visited.add("initial")
 
         elif self.state == "Corridor":
-            if "initial" in msg or "library" in msg or "first room" in msg:
+            if "room 1" in msg or "library" in msg or "first room" in msg:
                 if "key" in self.inventory:
                     self.state = "Room 1"
                     self.visited.add("Room 1")
@@ -191,7 +206,8 @@ DM:""")
             if any(word in msg for word in ["shout", "yell", "loud", "scream", "noise"]):
                 self.state = "Death"
                 self.death_message = "Your voice echoes through the library. The skeleton reacts instantly, silencing you forever."
-                self.display_image("Death by Skeleton")
+                #self.display_image("Death by Skeleton")
+                return
             if "shelf" in msg and "book" in self.inventory:
                 self.inventory.add("river passage open")
             if "crystal" in msg:
@@ -212,7 +228,7 @@ DM:""")
                 elif "fight" in msg or "attack" in msg or "combat" in msg:
                     self.state = "Death"
                     self.death_message = "You attempt to battle the serpent, but it’s far too powerful. Its venom ends your journey."
-                    self.display_image("Death by Snake")
+                    #self.display_image("Death by Snake")
 
         elif self.state == "Room 3":
             self.display_image("room3.png")

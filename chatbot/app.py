@@ -123,6 +123,27 @@ for message in st.session_state.messages:
                 unsafe_allow_html=True,
             )
 
+# Importieren der DungeonMaster Klasse
+from dungeonbot import DungeonMaster
+
+# Session-Setup
+if "dm" not in st.session_state:
+    st.session_state.dm = DungeonMaster()
+    st.session_state.chat_history = []
+
+dm = st.session_state.dm
+
+# Sidebar
+with st.sidebar:
+    st.markdown("### 🗺️ Dungeonkarte")
+    if hasattr(dm, "get_current_room_image"):
+        image_path = dm.get_current_room_image()  # kommt aus DungeonMaster
+        st.image(image_path, caption=f"Aktueller Raum: {dm.state}", use_column_width=True)
+    st.markdown("---")
+    st.markdown(f"📦 Inventar: {', '.join(sorted(dm.inventory)) or 'leer'}")
+    st.markdown(f"🧭 Räume besucht: {', '.join(sorted(dm.visited)) or 'keine'}")
+
+
 # Eingabefeld in einem Container
 with st.container():
     st.markdown('<div class="input-container">', unsafe_allow_html=True)
@@ -148,6 +169,10 @@ if user_input and user_input != st.session_state.last_input:
         )
         response.raise_for_status()  # Raises HTTPError for bad responses
         response_data = response.json()
+
+        # 📸 Aktuelles Raum-Bild anzeigen (Hauptbereich)
+        img_path = dm.get_current_room_image()
+        st.image(img_path, caption="Szene", use_column_width=True)
 
         # Bot-Antwort zum Chat-Verlauf hinzufügen
         st.session_state.messages.append(
