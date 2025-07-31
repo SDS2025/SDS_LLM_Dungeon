@@ -27,7 +27,6 @@ st.markdown(
     """
 <style>
     /* Streamlit UI Elemente ausblenden */
-    #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .stDeployButton {display: none;}

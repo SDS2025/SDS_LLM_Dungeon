@@ -83,7 +83,7 @@ Room & Game Info (for you only! Do NOT reveal to player):
     Touching the correct one (silver) shows the hidden path which is a hidden door in the stone of the wall that needs to be unlocked with the key found in the room.  The door leads to the corridor and is the only way to leave the room. 
     if the player **inserts the key into the golden dragon**, they immediately **die by fire**.
                                               
-- The Corridor connects to the first room, the second room and the third room. The player enters it after leaving the first room. The doors to each room look the same and the player cannot tell what is behind them without entering.
+- The Corridor connects to the intitial room and has doors that lead to the first room, the second room and the third room. The player enters it after leaving the first room. The doors to each room look the same and the player cannot tell what is behind them without entering.
 
 - Room 1: (Library) has a mute skeleton NPC that gestures for silence and wears a crystal on a necklace that gives off a faint glow. 
     If the player **makes noise, shouts, or speaks loudly**, the skeleton **kills them immediately**.
