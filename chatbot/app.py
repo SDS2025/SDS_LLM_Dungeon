@@ -100,27 +100,27 @@ Begrüße den Bot und starte ins Abenteuer ⚔️🐍.
 
 
 # Chat-Verlauf anzeigen
-for message in st.session_state.messages:
-    with st.container():
-        if message["role"] == "user":
-            st.markdown(
-                f"""
-            <div class="chat-message user">
-                <div>👤 <b>Du:</b></div>
-                <div>{message["content"]}</div>
-            </div>
-            """,
-                unsafe_allow_html=True,
-            )
-        else:
-            st.markdown(
-                f"""
-            <div class="chat-message bot">
-                <div>{message["content"]}</div>
-            </div>
-            """,
-                unsafe_allow_html=True,
-            )
+#for message in st.session_state.messages:
+#    with st.container():
+#        if message["role"] == "user":
+#            st.markdown(
+#                f"""
+#            <div class="chat-message user">
+#                <div>👤 <b>Du:</b></div>
+#                <div>{message["content"]}</div>
+#            </div>
+#            """,
+#                unsafe_allow_html=True,
+#            )
+#        else:
+#            st.markdown(
+#                f"""
+#            <div class="chat-message bot">
+#                <div>{message["content"]}</div>
+#            </div>
+#            """,
+#                unsafe_allow_html=True,
+#            )
 
 # Importieren der DungeonMaster Klasse
 from dungeonbot import DungeonMaster
@@ -129,27 +129,82 @@ from dungeonbot import DungeonMaster
 if "dm" not in st.session_state:
     st.session_state.dm = DungeonMaster()
     st.session_state.chat_history = []
+    st.session_state.latest_input = None
+    st.session_state.latest_response = None
 
 dm = st.session_state.dm
+
+# Eingabefeld
+user_input = st.chat_input("🧐")
+
+# Wenn der Spieler eine Aktion eingibt
+if user_input:
+    response, log = dm.get_response(user_input, st.session_state.chat_history)
+    st.session_state.chat_history.append(f"Player: {user_input}")
+    st.session_state.chat_history.append(f"DM: {response}")
+
+# 🖼️ Hauptbereich – Bild vor Antwort anzeigen
+main_image = dm.get_current_room_image()
+st.image(main_image, caption="Szene", use_column_width=True)
+
+st.markdown("---")
+st.markdown("### 🗨️ Chathistory")
+
+for i in range(0, len(st.session_state.chat_history), 2):
+    player_msg = st.session_state.chat_history[i].replace("Player: ", "")
+    dm_msg = st.session_state.chat_history[i + 1].replace("DM: ", "")
+
+    # Letzte Nutzereingabe farblich hervorheben
+    if i == len(st.session_state.chat_history) - 2:
+        st.markdown(
+            f"""
+            <div style='background-color:#f0f8ff; padding:10px; border-left:5px solid #1f77b4; margin-bottom:5px'>
+                <b>🧍 You:</b> {player_msg}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            f"""
+            <div style='background-color:#e6f2ff; padding:10px; margin-bottom:5px'>
+                <b>🧍 You:</b> {player_msg}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown(
+        f"""
+        <div style='background-color:#f9f9f9; padding:10px; margin-bottom:20px'>
+            <b>🧙 DM:</b> {dm_msg}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# Spielende anzeigen
+if dm.is_game_over():
+    st.markdown(f"### 💀 {dm.death_message}")
+    st.stop()
 
 # Sidebar
 with st.sidebar:
     st.markdown("### 🗺️ Dungeonkarte")
-    if hasattr(dm, "get_current_room_image"):
-        image_path = dm.get_current_room_image()  # kommt aus DungeonMaster
-        st.image(image_path, caption=f"Aktueller Raum: {dm.state}", use_column_width=True)
+    sidebar_img = dm.get_current_room_image()
+    st.image(sidebar_img, caption=f"Aktueller Raum: {dm.state}", use_column_width=True)
     st.markdown("---")
     st.markdown(f"📦 Inventar: {', '.join(sorted(dm.inventory)) or 'leer'}")
     st.markdown(f"🧭 Räume besucht: {', '.join(sorted(dm.visited)) or 'keine'}")
 
 
 # Eingabefeld in einem Container
-with st.container():
-    st.markdown('<div class="input-container">', unsafe_allow_html=True)
-    user_input = st.text_input(
-        "Deine Nachricht:", key=f"user_input_{st.session_state.input_key}"
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
+#with st.container():
+#    st.markdown('<div class="input-container">', unsafe_allow_html=True)
+#    user_input = st.text_input(
+#        "Deine Nachricht:", key=f"user_input_{st.session_state.input_key}"
+#    )
+#    st.markdown("</div>", unsafe_allow_html=True)
 
 if user_input and user_input != st.session_state.last_input:
     # Nachricht zum Chat-Verlauf hinzufügen
