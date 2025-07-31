@@ -74,20 +74,25 @@ Rules:
 - Only perform an action if the player clearly describes it ("I use the key on the door", "I insert the crystal into the lock", etc).
 - Simply having an item is not enough to trigger the next event.
 - If the player does not describe a clear action, just describe the environment and wait for more input.
-- Never give away puzzle solutions.                                         
+- suggest the player if he can go trough a door, if its open, but never say what is behind it.
+- Never give away puzzle solutions.    
+ - If the player writes "go" it means tey want to go trough the door to the next room, if they solved the puzzle of the room.                                     
 
 Room & Game Info (for you only! Do NOT reveal to player):
 - initial: two statues mounted on opposite walls: two dragon heads crafted from metal. one silver, one gold.
     The room also has a key and a book.
      The book contains a riddle that hints towards which dragon head is the correct one, its not needed to insert the key in the silver dragon keyhole. 
-    Touching the correct one (silver) shows the hidden path which is a hidden door in the stone of the wall that needs to be unlocked with the key found in the room.  The door leads to the corridor and is the only way to leave the room. 
+    Touching the correct one (silver) shows a hidden door in the stone of the wall that needs to be unlocked with the key found in the room.  
+        The door leads to the corridor and is the only way to leave the room. 
     if the player **inserts the key into the golden dragon**, they immediately **die by fire**.
                                               
-- The Corridor connects to the first room, the second room and the third room. The player enters it after leaving the first room. The doors to each room look the same and the player cannot tell what is behind them without entering.
+- The Corridor connects to the initial room, the first room, the second room and the third room. The player enters it after leaving the initial room. 
+    The doors to each room look the same and the player cannot tell what is behind them without entering.
 
 - Room 1: (Library) has a mute skeleton NPC that gestures for silence and wears a crystal on a necklace that gives off a faint glow. 
-    If the player **makes noise, shouts, or speaks loudly**, the skeleton **kills them immediately**.
-     Placing the book from initial into an empty shelf opens a river passage. 
+    If the player **makes noise, shouts, yell or speaks loudly**, the skeleton **kills them immediately**.
+    Placing the book from initial into an empty shelf opens a river passage. 
+            The player can escape the dungeon by taking a boat on the underground river, but only if they have opened the river passage first.
     Taking the crystal deactivates the skeleton but is not related to the secret passage.
 
 - Room 2: contains a deadly snake and some gold. 
@@ -102,7 +107,7 @@ Room & Game Info (for you only! Do NOT reveal to player):
     Either this crystal or the one from the library can be inserted into the door to escape.
 
 - The underground river has a boat. Reaching it allows the player to escape via an alternate ending.
-- The game ends when the player escapes through the door in Room 4 or by boat, or dies in a room.
+- The game ends when the player escapes through the door in Room 3 or by boat, or dies in a room.
 
 State:
 - Current Room: {state}
@@ -184,6 +189,7 @@ DM:""")
                     return
                 elif "silver" in msg:
                     if "key" in self.inventory:
+                       if "insert" in msg:
                         self.state = "Corridor"
                         self.visited.add("initial")
 
@@ -206,6 +212,7 @@ DM:""")
             if any(word in msg for word in ["shout", "yell", "loud", "scream", "noise"]):
                 self.state = "Death"
                 self.death_message = "Your voice echoes through the library. The skeleton reacts instantly, silencing you forever."
+                print("[DEBUG] Death by noise triggered in Room 1")
                 #self.display_image("Death by Skeleton")
                 return
             if "shelf" in msg and "book" in self.inventory:
@@ -223,12 +230,12 @@ DM:""")
 
         elif self.state == "Room 2":
             if "snake" in msg:
-                if "charge" in msg or "life" in msg:
-                    self.inventory.add("life orb")
-                elif "fight" in msg or "attack" in msg or "combat" in msg:
+                if "fight" in msg or "attack" in msg or "combat" in msg:
                     self.state = "Death"
                     self.death_message = "You attempt to battle the serpent, but it’s far too powerful. Its venom ends your journey."
                     #self.display_image("Death by Snake")
+                elif "charge" in msg or "gold" in msg:
+                    self.inventory.add("gold")
 
         elif self.state == "Room 3":
             self.display_image("room3.png")
