@@ -80,14 +80,14 @@ Rules:
 
 Room & Game Info (for you only! Do NOT reveal to player):
 - initial: two statues mounted on opposite walls: two dragon heads crafted from metal. one silver, one gold.
-    The room also has a key and a book.
-     The book contains a riddle that hints towards which dragon head is the correct one, its not needed to insert the key in the silver dragon keyhole. 
-    Touching the correct one (silver) shows a hidden door in the stone of the wall that needs to be unlocked with the key found in the room.  
+    The room also has a key and a book on a table inside the room.
+     The book contains a riddle that hints towards which dragon head is the correct one. It is not required that the player has read it to insert the key in the silver dragon keyhole. 
+    Touching the correct one (silver) shows a hidden door in the stone of the wall that is locked and needs to be unlocked with the key found in the room.  
         The door leads to the corridor and is the only way to leave the room. 
     if the player **inserts the key into the golden dragon**, they immediately **die by fire**.
                                               
-- The Corridor connects to the initial room, the first room, the second room and the third room. The player enters it after leaving the initial room. 
-    The doors to each room look the same and the player cannot tell what is behind them without entering.
+- The Corridor connects to the initial room. It has three doors for the first room (Room 1), the second room (Room 2) and the third room (Room 3). The player always enters it after leaving the initial room. 
+    The doors to each new room look the same and the player cannot tell what is behind them without entering.
 
 - Room 1: (Library) has a mute skeleton NPC that gestures for silence and wears a crystal on a necklace that gives off a faint glow. 
     If the player **makes noise, shouts, yell or speaks loudly**, the skeleton **kills them immediately**.
@@ -106,7 +106,7 @@ Room & Game Info (for you only! Do NOT reveal to player):
     The correct **combination 4-9-2** must be entered into a **vitrine/safe** to unlock a crystal.
     Either this crystal or the one from the library can be inserted into the door to escape.
 
-- The underground river has a boat. Reaching it allows the player to escape via an alternate ending.
+- The underground river has a boat. Reaching it allows the player to escape via an alternate ending. The player can only reach the river through the secret passage in the library.
 - The game ends when the player escapes through the door in Room 3 or by boat, or dies in a room.
 
 State:
